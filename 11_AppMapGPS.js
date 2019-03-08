@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, TextInput, View, Alert, StatusBar } from 'react-native';
 import { MapView, Location, Permissions } from 'expo';
+import { myMapQuestKey } from './MyKeys';
 
 export default class App extends React.Component {
 
@@ -38,7 +39,7 @@ export default class App extends React.Component {
   };
 
   search = () => {
-    const url = 'http://www.mapquestapi.com/geocoding/v1/address?key=____________________&location=' + this.state.address; 
+    const url = 'http://www.mapquestapi.com/geocoding/v1/address?key=' + myMapQuestKey + '&location=' + this.state.address; 
     fetch(url) 
     .then(response => response.json()) 
     .then(responseJson => { this.setState( prevState => ({

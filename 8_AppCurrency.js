@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button, TextInput, Picker, Alert, StatusBar } from 'react-native';
+import { myDataFixerKey } from './MyKeys';
 
 export default class App extends React.Component {
 
@@ -9,7 +10,7 @@ export default class App extends React.Component {
   }
 
   componentDidMount = () => {
-    const url = 'http://data.fixer.io/api/latest?access_key=____________________&symbols=USD,SEK,RON';
+    const url = 'http://data.fixer.io/api/latest?access_key=' + myDataFixerKey + '&symbols=USD,SEK,RON';
     fetch(url)
       .then((response) => response.json())
       .then((responseJson) => { 
@@ -29,9 +30,6 @@ export default class App extends React.Component {
       this.setState({result});
     }
   }
-
-  // 9e19b7f933047b8d6ee7298d42e8188f
-  // console.warn() 
 
   render() {
     return (
