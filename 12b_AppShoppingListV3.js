@@ -27,13 +27,25 @@ export default class App extends React.Component {
     this.setState({ product: '', qty: '' });
   }
 
+  deleteProduct = (item) => {
+    firebase.database().ref('shoppingList/').once('value', snapshot => {
+      snapshot.forEach(childSnapshot => {
+        var childKey = childSnapshot.key;
+        var childVal = childSnapshot.val();
+        if (childVal.product == item.product) {
+          firebase.database().ref('shoppingList/' + childKey).remove();
+        }
+      })
+    });
+  }
+  
   render() {
     return (  
       <View style={styles.container}>
-        <TextInput placeholder='Product' style={{ marginTop: 100, fontSize: 18, width: 150, borderColor: 'gray', borderWidth: 1 }}
+        <TextInput placeholder='Product' style={{marginTop: 100, fontSize: 18, width: 150, borderColor: 'gray', borderWidth: 1}}
           onChangeText={(product) => this.setState({product})}
           value={this.state.product} />  
-        <TextInput placeholder='Quantity' style={{ marginTop: 10, marginBottom: 10,  fontSize:18, width:150, borderColor: 'gray', borderWidth: 1 }}
+        <TextInput placeholder='Quantity' style={{ marginTop: 10, marginBottom: 10,  fontSize:18, width:150, borderColor: 'gray', borderWidth: 1}}
           onChangeText={(qty) => this.setState({qty})}
           value={this.state.qty} />      
         <Button onPress={this.saveProduct} title="Add Product" /> 
@@ -43,7 +55,8 @@ export default class App extends React.Component {
           keyExtractor={item => item.product.toString()} 
           renderItem={({item}) =>
             <View style={styles.listcontainer}>
-              <Text style={{fontSize: 18}}>{item.product}, {item.qty}</Text>
+              <Text style={{fontSize: 18}}>{item.product}, {item.qty} - </Text>
+              <Text style={{fontSize: 18, color: '#8B0000'}} onPress={() => this.deleteProduct(item)}>Bought</Text>
             </View>
           }
           data={this.state.shoppingList}
