@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleSheet, Text, TextInput, View, Button, FlatList } from 'react-native';
+import { StyleSheet, Text, TextInput, View, FlatList } from 'react-native';
+import { Input, Button } from 'react-native-elements';
 import { SQLite } from 'expo';
 
 const db = SQLite.openDatabase('coursedb.db');
@@ -40,25 +41,33 @@ export default class App extends React.Component {
   render() {
     return (  
       <View style={styles.container}>
-        <TextInput placeholder='Product' style={{ marginTop: 100, fontSize: 18, width: 150, borderColor: 'gray', borderWidth: 1 }}
-          onChangeText={(product) => this.setState({product})}
-          value={this.state.product} />  
-        <TextInput placeholder='Quantity' style={{ marginTop: 10, marginBottom: 10,  fontSize:18, width:150, borderColor: 'gray', borderWidth: 1 }}
-          onChangeText={(qty) => this.setState({qty})}
-          value={this.state.qty} />      
-        <Button onPress={this.saveProduct} title="Add Product" /> 
-        <Text style={{marginTop: 30, fontSize: 20}}>My Shopping List</Text>
-        <FlatList 
-          style={{marginLeft: "5%"}}
-          keyExtractor={item => item.id.toString()} 
-          renderItem={({item}) =>
-            <View style={styles.listcontainer}>
-              <Text style={{fontSize: 18}}>{item.product}, {item.qty} - </Text>
-              <Text style={{fontSize: 18, color: '#006400'}} onPress={() => this.deleteProduct(item.id)}>Bought</Text>
-            </View>
-          }
-          data={this.state.shoppingList}
-        />      
+        <View style={{ marginTop: 400, width: 200 }}>
+          <Input label='Product' placeholder='Enter a product' 
+            onChangeText={(product) => this.setState({product})}
+            value={this.state.product} />
+        </View>
+        <View style={{ marginTop: 30, width: 200 }}>
+          <Input label='Quantity' placeholder='Enter quantity' 
+            onChangeText={(qty) => this.setState({qty})}
+            value={this.state.qty} />
+        </View> 
+        <View style={{ marginTop: 40, width: 200 }}>  
+          <Button icon={{ name: 'save', color: 'white' }} onPress={this.saveProduct} title="Add Product" />
+        </View> 
+        <View> 
+          <Text style={{marginTop: 30, fontSize: 20}}>My Shopping List</Text>
+          <FlatList 
+            style={{marginLeft: "5%"}}
+            keyExtractor={item => item.id.toString()} 
+            renderItem={({item}) =>
+              <View style={styles.listcontainer}>
+                <Text style={{fontSize: 18}}>{item.product}, {item.qty} - </Text>
+                <Text style={{fontSize: 18, color: '#006400'}} onPress={() => this.deleteProduct(item.id)}>Bought</Text>
+              </View>
+            }
+            data={this.state.shoppingList}
+          />
+        </View>   
       </View>
     );
   }
